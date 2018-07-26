@@ -5,7 +5,7 @@
 Xingang Pan, Ping Luo, Jianping Shi, Xiaoou Tang. ["Two at Once: Enhancing Learning and Generalization Capacities via IBN-Net"](https://arxiv.org/abs/1807.09441), ECCV2018.  
 
 ### Introduction
-<img align="middle" width="500" height="280" src="utils/IBNNet.pdf">   
+<img align="middle" width="500" height="280" src="./utils/IBNNet.png">   
 
 - IBN-Net carefully unifies instance normalization and batch normalization in a single deep network.  
 - It provides an extremely simple way to increase both modeling and generalization capacity without adding model complexity.
