@@ -53,6 +53,9 @@ Top1/Top5 error on the ImageNet validation set are reported. You may get differe
 
 This code is modified from [bearpaw/pytorch-classification](https://github.com/bearpaw/pytorch-classification).
 
+### MXNet Implementation
+https://github.com/bruinxiong/IBN-Net.mxnet
+
 ### Citing IBN-Net
 ```  
 @inproceedings{pan2018IBN-Net,  
