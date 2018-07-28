@@ -160,9 +160,6 @@ def main():
                     baseWidth=args.base_width,
                     cardinality=args.cardinality,
                 )
-    elif args.arch == 'caffemodel':
-        print("=> creating model '{}'".format(args.arch))
-        model = models.__dict__[args.arch](args.prototxt, args.weights, args.sparse, args.acc)
     else:
         print("=> creating model '{}'".format(args.arch))
         model = models.__dict__[args.arch]()
@@ -242,10 +239,6 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda):
     for batch_idx, (inputs, targets) in enumerate(train_loader):
         # measure data loading time
         data_time.update(time.time() - end)
-        if args.arch == 'caffemodel':
-            indices = torch.LongTensor([2,1,0])
-            inputs = torch.index_select(inputs, 1, indices)
-
         if use_cuda:
             inputs, targets = inputs.cuda(), targets.cuda(async=True)
         inputs, targets = torch.autograd.Variable(inputs), torch.autograd.Variable(targets)

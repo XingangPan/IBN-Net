@@ -38,7 +38,7 @@ Top1/Top5 error on the ImageNet validation set are reported. You may get differe
 1. Download our pre-trained models from [Google Drive](https://drive.google.com/open?id=1JxSo6unmvwkCavEqh42NDKYUG29HoLE0) and save them to `./pretrained`.  
 2. Edit test.sh. Modify `model` and `data_path` to yours.  
     Options for `model`: densenet121_ibn_a, densenet169_ibn_a, resnet50_ibn_a_old, resnet50_ibn_a, resnet50_ibn_b, resnet101_ibn_a_old, resnet101_ibn_a, resnext101_ibn_a, se_resnet101_ibn_a.  
-    (Note: For IBN-Net version of ResNet-50 and ResNet-101, our results in the paper are reported based on an slower implementation, corresponding to resnet50_ibn_a_old and resnet101_ibn_a_old here. We also provide a faster implementation, and the models are resnet50_ibn_a, resnet101_ibn_a, and all the rest. The top1/top5 error for resnet50_ibn_a and resnet101_ibn_a are 22.76/6.41 and 5.61/21.29 respectively.)  
+    (Note: For IBN-Net version of ResNet-50 and ResNet-101, our results in the paper are reported based on an slower implementation, corresponding to resnet50_ibn_a_old and resnet101_ibn_a_old here. We also provide a faster implementation, and the models are resnet50_ibn_a, resnet101_ibn_a, and all the rest. The top1/top5 error for resnet50_ibn_a and resnet101_ibn_a are 22.76/6.41 and 21.29/5.61 respectively.)  
 3. Run test script
     ```Shell
     sh test.sh
