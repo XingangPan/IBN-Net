@@ -170,7 +170,7 @@ def main():
     print(model)
     if args.model_weight:
         model_weight = torch.load(args.model_weight)
-        model.load_state_dict(model_weight['state_dict'])
+        model.load_state_dict(model_weight['state_dict'], strict=False)
     
     print('    Total params: %.2fM' % (sum(p.numel() for p in model.parameters())/1000000.0))
 
@@ -240,8 +240,7 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda):
         # measure data loading time
         data_time.update(time.time() - end)
         if use_cuda:
-            inputs, targets = inputs.cuda(), targets.cuda(async=True)
-        inputs, targets = torch.autograd.Variable(inputs), torch.autograd.Variable(targets)
+            inputs, targets = inputs.cuda(), targets.cuda(non_blocking=True)
 
         # compute output
         outputs = model(inputs)
@@ -249,9 +248,9 @@ def train(train_loader, model, criterion, optimizer, epoch, use_cuda):
         prec1, prec5 = accuracy(outputs.data, targets.data, topk=(1, 5))
 
         # measure accuracy and record loss
-        losses.update(loss.data[0], inputs.size(0))
-        top1.update(prec1[0], inputs.size(0))
-        top5.update(prec5[0], inputs.size(0))
+        losses.update(loss.item(), inputs.size(0))
+        top1.update(prec1.item(), inputs.size(0))
+        top5.update(prec5.item(), inputs.size(0))
 
         # compute gradient and do SGD step
         optimizer.zero_grad()
@@ -298,7 +297,6 @@ def test(val_loader, model, criterion, epoch, use_cuda):
         data_time.update(time.time() - end)
         if use_cuda:
             inputs, targets = inputs.cuda(), targets.cuda()
-        inputs, targets = torch.autograd.Variable(inputs, volatile=True), torch.autograd.Variable(targets)
 
         # compute output
         end = time.time()
@@ -308,9 +306,9 @@ def test(val_loader, model, criterion, epoch, use_cuda):
         prec1, prec5 = accuracy(outputs.data, targets.data, topk=(1, 5))
 
         # measure accuracy and record loss
-        losses.update(loss.data[0], inputs.size(0))
-        top1.update(prec1[0], inputs.size(0))
-        top5.update(prec5[0], inputs.size(0))
+        losses.update(loss.item(), inputs.size(0))
+        top1.update(prec1.item(), inputs.size(0))
+        top5.update(prec5.item(), inputs.size(0))
 
         # plot progress
         if (batch_idx+1) % 10 == 0: 

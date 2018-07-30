@@ -11,7 +11,7 @@ Xingang Pan, Ping Luo, Jianping Shi, Xiaoou Tang. ["Two at Once: Enhancing Learn
 - It provides an extremely simple way to increase both modeling and generalization capacity without adding model complexity.
 
 ### Requirements
-- Pytorch 0.3.1
+- Pytorch 0.3.1 (master branch) or Pytorch 0.4.1 (0.4.1 branch)
 
 ### Results
 
@@ -35,8 +35,9 @@ Top1/Top5 error on the ImageNet validation set are reported. You may get differe
 2. Download [ImageNet](http://image-net.org/download-images) dataset (if you need to test or train on ImageNet). You may follow the instruction at [fb.resnet.torch](https://github.com/facebook/fb.resnet.torch) to process the validation set.
 
 ### Testing
-1. Download our pre-trained models from [Google Drive](https://drive.google.com/open?id=1JxSo6unmvwkCavEqh42NDKYUG29HoLE0) and save them to `./pretrained`.  
-2. Edit test.sh. Modify `model` and `data_path` to yours.  
+1. Download our pre-trained models and save them to `./pretrained`. 
+    Download link: [Pretrained models for pytorch0.3.1](https://drive.google.com/open?id=1JxSo6unmvwkCavEqh42NDKYUG29HoLE0), [Pretrained models for pytorch0.4.1](https://drive.google.com/open?id=1thS2B8UOSBi_cJX6zRy6YYRwz_nVFI_S)
+2. Edit `test.sh`. Modify `model` and `data_path` to yours.  
     Options for `model`: densenet121_ibn_a, densenet169_ibn_a, resnet50_ibn_a_old, resnet50_ibn_a, resnet50_ibn_b, resnet101_ibn_a_old, resnet101_ibn_a, resnext101_ibn_a, se_resnet101_ibn_a.  
     (Note: For IBN-Net version of ResNet-50 and ResNet-101, our results in the paper are reported based on an slower implementation, corresponding to resnet50_ibn_a_old and resnet101_ibn_a_old here. We also provide a faster implementation, and the models are resnet50_ibn_a, resnet101_ibn_a, and all the rest. The top1/top5 error for resnet50_ibn_a and resnet101_ibn_a are 22.76/6.41 and 21.29/5.61 respectively.)  
 3. Run test script
@@ -45,7 +46,7 @@ Top1/Top5 error on the ImageNet validation set are reported. You may get differe
     ```
  
 ### Training
-1. Edit train.sh. Modify `model` and `data_path` to yours.  
+1. Edit `train.sh`. Modify `model` and `data_path` to yours.  
 2. Run train script
     ```Shell
     sh train.sh
