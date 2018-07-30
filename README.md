@@ -35,7 +35,7 @@ Top1/Top5 error on the ImageNet validation set are reported. You may get differe
 2. Download [ImageNet](http://image-net.org/download-images) dataset (if you need to test or train on ImageNet). You may follow the instruction at [fb.resnet.torch](https://github.com/facebook/fb.resnet.torch) to process the validation set.
 
 ### Testing
-1. Download our pre-trained models and save them to `./pretrained`. 
+1. Download our pre-trained models and save them to `./pretrained`.   
     Download link: [Pretrained models for pytorch0.3.1](https://drive.google.com/open?id=1JxSo6unmvwkCavEqh42NDKYUG29HoLE0), [Pretrained models for pytorch0.4.1](https://drive.google.com/open?id=1thS2B8UOSBi_cJX6zRy6YYRwz_nVFI_S)
 2. Edit `test.sh`. Modify `model` and `data_path` to yours.  
     Options for `model`: densenet121_ibn_a, densenet169_ibn_a, resnet50_ibn_a_old, resnet50_ibn_a, resnet50_ibn_b, resnet101_ibn_a_old, resnet101_ibn_a, resnext101_ibn_a, se_resnet101_ibn_a.  
