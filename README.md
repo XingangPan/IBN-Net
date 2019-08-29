@@ -9,6 +9,7 @@ Xingang Pan, Ping Luo, Jianping Shi, Xiaoou Tang. ["Two at Once: Enhancing Learn
 
 - IBN-Net carefully unifies instance normalization and batch normalization in a single deep network.  
 - It provides an extremely simple way to increase both modeling and generalization capacity without adding model complexity.
+- IBN-Net works surprisingly well for Person Re-identification task, see [michuanhaohao/reid-strong-baseline](https://github.com/michuanhaohao/reid-strong-baseline) and [strong baseline for ReID](https://arxiv.org/pdf/1906.08332.pdf) for more details.
 
 ### Requirements
 - Pytorch 0.3.1 (master branch) or Pytorch 0.4.1 (0.4.1 branch)
