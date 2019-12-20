@@ -9,3 +9,4 @@ from .resnext import *
 from .resnext_ibn_a import *
 from .se_resnet import *
 from .se_resnet_ibn_a import *
+from .se_resnet_ibn_b import *
