@@ -327,11 +327,11 @@ def test(val_loader, model, criterion, epoch, use_cuda):
     bar.finish()
     return (losses.avg, top1.avg, top5.avg)
 
-def save_checkpoint(state, is_best, checkpoint='checkpoint', filename='checkpoint.pth.tar'):
+def save_checkpoint(state, is_best, checkpoint='checkpoint', filename='checkpoint.pth'):
     filepath = os.path.join(checkpoint, filename)
     torch.save(state, filepath)
     if is_best:
-        shutil.copyfile(filepath, os.path.join(checkpoint, 'model_best.pth.tar'))
+        shutil.copyfile(filepath, os.path.join(checkpoint, 'model_best.pth'))
 
 def adjust_learning_rate(optimizer, epoch):
     global state
