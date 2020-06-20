@@ -1,28 +1,37 @@
+from collections import OrderedDict
+import warnings
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.utils.model_zoo as model_zoo
-from collections import OrderedDict
 
-__all__ = ['DenseNet', 'densenet121_ibn_a', 'densenet169_ibn_a', 'densenet201_ibn_a', 'densenet161_ibn_a']
+
+__all__ = ['DenseNet', 'densenet121_ibn_a', 'densenet169_ibn_a',
+           'densenet201_ibn_a', 'densenet161_ibn_a']
 
 
 model_urls = {
-    'densenet121': 'https://download.pytorch.org/models/densenet121-a639ec97.pth',
-    'densenet169': 'https://download.pytorch.org/models/densenet169-b2777c0a.pth',
-    'densenet201': 'https://download.pytorch.org/models/densenet201-c1103571.pth',
-    'densenet161': 'https://download.pytorch.org/models/densenet161-8d451a50.pth',
+    'densenet121_ibn_a': 'https://xingang.s3-ap-southeast-1.amazonaws.com/densenet121_ibn_a-e4af5cc1.pth',
+    'densenet169_ibn_a': 'https://xingang.s3-ap-southeast-1.amazonaws.com/densenet169_ibn_a-9f32c161.pth',
 }
 
-class BNIN(nn.Module):
-    def __init__(self, planes):
-        super(BNIN, self).__init__()
-        half1 = int(planes*0.6)
-        self.half = half1
-        half2 = planes - half1
-        self.BN = nn.BatchNorm2d(half1)
-        self.IN = nn.InstanceNorm2d(half2, affine=True)
-    
+
+class IBN(nn.Module):
+    r"""Instance-Batch Normalization layer from
+    `"Two at Once: Enhancing Learning and Generalization Capacities via IBN-Net" 
+    <https://arxiv.org/pdf/1807.09441.pdf>`
+
+    Args:
+        planes (int): Number of channels for the input tensor
+        ratio (float): Ratio of instance normalization in the IBN layer
+    """
+    def __init__(self, planes, ratio=0.5):
+        super(IBN, self).__init__()
+        self.half = int(planes * (1-ratio))
+        self.BN = nn.BatchNorm2d(self.half)
+        self.IN = nn.InstanceNorm2d(planes - self.half, affine=True)
+
     def forward(self, x):
         split = torch.split(x, self.half, 1)
         out1 = self.BN(split[0].contiguous())
@@ -30,8 +39,9 @@ class BNIN(nn.Module):
         out = torch.cat((out1, out2), 1)
         return out
 
+
 def densenet121_ibn_a(pretrained=False, **kwargs):
-    r"""Densenet-121 model from
+    r"""Densenet-121-IBN-a model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
 
     Args:
@@ -40,12 +50,12 @@ def densenet121_ibn_a(pretrained=False, **kwargs):
     model = DenseNet(num_init_features=64, growth_rate=32, block_config=(6, 12, 24, 16),
                      **kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['densenet121']))
+        model.load_state_dict(model_zoo.load_url(model_urls['densenet121_ibn_a']))
     return model
 
 
 def densenet169_ibn_a(pretrained=False, **kwargs):
-    r"""Densenet-169 model from
+    r"""Densenet-169-IBN-a model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
 
     Args:
@@ -54,12 +64,12 @@ def densenet169_ibn_a(pretrained=False, **kwargs):
     model = DenseNet(num_init_features=64, growth_rate=32, block_config=(6, 12, 32, 32),
                      **kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['densenet169']))
+        model.load_state_dict(model_zoo.load_url(model_urls['densenet169_ibn_a']))
     return model
 
 
 def densenet201_ibn_a(pretrained=False, **kwargs):
-    r"""Densenet-201 model from
+    r"""Densenet-201-IBN-a model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
 
     Args:
@@ -68,12 +78,12 @@ def densenet201_ibn_a(pretrained=False, **kwargs):
     model = DenseNet(num_init_features=64, growth_rate=32, block_config=(6, 12, 48, 32),
                      **kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['densenet201']))
+        warnings.warn("Pretrained model not available for Densenet-201-IBN-a!")
     return model
 
 
 def densenet161_ibn_a(pretrained=False, **kwargs):
-    r"""Densenet-161 model from
+    r"""Densenet-161-IBN-a model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
 
     Args:
@@ -82,7 +92,7 @@ def densenet161_ibn_a(pretrained=False, **kwargs):
     model = DenseNet(num_init_features=96, growth_rate=48, block_config=(6, 12, 36, 24),
                      **kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['densenet161']))
+        warnings.warn("Pretrained model not available for Densenet-161-IBN-a!")
     return model
 
 
@@ -90,15 +100,15 @@ class _DenseLayer(nn.Sequential):
     def __init__(self, num_input_features, growth_rate, bn_size, drop_rate, ibn):
         super(_DenseLayer, self).__init__()
         if ibn:
-            self.add_module('norm.1', BNIN(num_input_features)),
+            self.add_module('norm1', IBN(num_input_features, 0.4)),
         else:
-            self.add_module('norm.1', nn.BatchNorm2d(num_input_features)),
-        self.add_module('relu.1', nn.ReLU(inplace=True)),
-        self.add_module('conv.1', nn.Conv2d(num_input_features, bn_size *
+            self.add_module('norm1', nn.BatchNorm2d(num_input_features)),
+        self.add_module('relu1', nn.ReLU(inplace=True)),
+        self.add_module('conv1', nn.Conv2d(num_input_features, bn_size *
                         growth_rate, kernel_size=1, stride=1, bias=False)),
-        self.add_module('norm.2', nn.BatchNorm2d(bn_size * growth_rate)),
-        self.add_module('relu.2', nn.ReLU(inplace=True)),
-        self.add_module('conv.2', nn.Conv2d(bn_size * growth_rate, growth_rate,
+        self.add_module('norm2', nn.BatchNorm2d(bn_size * growth_rate)),
+        self.add_module('relu2', nn.ReLU(inplace=True)),
+        self.add_module('conv2', nn.Conv2d(bn_size * growth_rate, growth_rate,
                         kernel_size=3, stride=1, padding=1, bias=False)),
         self.drop_rate = drop_rate
 

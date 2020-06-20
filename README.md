@@ -11,7 +11,7 @@ Xingang Pan, Ping Luo, Jianping Shi, Xiaoou Tang. ["Two at Once: Enhancing Learn
 - It provides an extremely simple way to increase both modeling and generalization capacity without adding model complexity.
 
 ### Requirements
-- Pytorch 0.3.1 (master branch) or Pytorch 0.4.1 (0.4.1 branch)
+- Pytorch 0.4.1 or higher
 
 ### Results
 
@@ -19,12 +19,12 @@ Top1/Top5 error on the ImageNet validation set are reported. You may get differe
 
 | Model                     | origin         |  re-implementation      | IBN-Net     |
 | -------------------       | ------------------ | ------------------ | ------------------ |
-| DenseNet-121          | 25.0/-             | 24.96/7.85       | 24.47/7.25              |
-| DenseNet-169          | 23.6/-              | 24.02/7.06      | 23.25/6.51              |
-| ResNet-50                | 24.7/7.8          | 24.27/7.08       | 22.54/6.32              |
-| ResNet-101             | 23.6/7.1           | 22.48/6.23       | 21.39/5.59              |
-| ResNeXt-101          | 21.2/5.6            | 21.31/5.74       | 20.88/5.42              |
-| SE-ResNet-101       | 22.38/6.07        | 21.68/5.88       | 21.25/5.51              |
+| DenseNet-121          | 25.0/-             | 24.96/7.85       | 24.47/7.25 [model](https://xingang.s3-ap-southeast-1.amazonaws.com/densenet121_ibn_a-e4af5cc1.pth)    |
+| DenseNet-169          | 23.6/-              | 24.02/7.06      | 23.25/6.51 [model](https://xingang.s3-ap-southeast-1.amazonaws.com/densenet169_ibn_a-9f32c161.pth)    |
+| ResNet-50                | 24.7/7.8          | 24.27/7.08       | 22.54/6.32  [model](https://xingang.s3-ap-southeast-1.amazonaws.com/resnet50_ibn_a-d9d0bb7b.pth)   |
+| ResNet-101             | 23.6/7.1           | 22.48/6.23       | 21.39/5.59  [model](https://xingang.s3-ap-southeast-1.amazonaws.com/resnet101_ibn_a-59ea0ac6.pth)  |
+| ResNeXt-101          | 21.2/5.6            | 21.31/5.74       | 20.88/5.42  [model](https://xingang.s3-ap-southeast-1.amazonaws.com/resnext101_ibn_a-6ace051d.pth)  |
+| SE-ResNet-101       | 22.38/6.07        | 21.68/5.88       | 21.25/5.51   [model](https://xingang.s3-ap-southeast-1.amazonaws.com/se_resnet101_ibn_a-fabed4e2.pth)  |
 
 ### Before Start
 1. Clone the repository  
@@ -35,12 +35,10 @@ Top1/Top5 error on the ImageNet validation set are reported. You may get differe
 2. Download [ImageNet](http://image-net.org/download-images) dataset (if you need to test or train on ImageNet). You may follow the instruction at [fb.resnet.torch](https://github.com/facebook/fb.resnet.torch) to process the validation set.
 
 ### Testing
-1. Download our pre-trained models and save them to `./pretrained`.   
-    Download link: [Pretrained models for pytorch0.3.1](https://drive.google.com/open?id=1JxSo6unmvwkCavEqh42NDKYUG29HoLE0), [Pretrained models for pytorch0.4.1](https://drive.google.com/open?id=1thS2B8UOSBi_cJX6zRy6YYRwz_nVFI_S)
-2. Edit `test.sh`. Modify `model` and `data_path` to yours.  
-    Options for `model`: densenet121_ibn_a, densenet169_ibn_a, resnet50_ibn_a_old, resnet50_ibn_a, resnet50_ibn_b, resnet101_ibn_a_old, resnet101_ibn_a, resnext101_ibn_a, se_resnet101_ibn_a.  
-    (Note: For IBN-Net version of ResNet-50 and ResNet-101, our results in the paper are reported based on an slower implementation, corresponding to resnet50_ibn_a_old and resnet101_ibn_a_old here. We also provide a faster implementation, and the models are resnet50_ibn_a, resnet101_ibn_a, and all the rest. The top1/top5 error for resnet50_ibn_a and resnet101_ibn_a are 22.76/6.41 and 21.29/5.61 respectively.)  
-3. Run test script
+1. Edit `test.sh`. Modify `model` and `data_path` to yours.  
+    Options for `model`: resnet50_ibn_a, resnet50_ibn_b, resnet101_ibn_a, resnext101_ibn_a, se_resnet101_ibn_a, densenet121_ibn_a, densenet169_ibn_a.  
+    
+2. Run test script
     ```Shell
     sh test.sh
     ```
@@ -52,7 +50,8 @@ Top1/Top5 error on the ImageNet validation set are reported. You may get differe
     sh train.sh
     ```
 
-This code is modified from [bearpaw/pytorch-classification](https://github.com/bearpaw/pytorch-classification).
+### Acknowledgement
+This code is developed based on [bearpaw/pytorch-classification](https://github.com/bearpaw/pytorch-classification).
 
 ### MXNet Implementation
 https://github.com/bruinxiong/IBN-Net.mxnet

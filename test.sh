@@ -1,13 +1,13 @@
 #!/usr/bin/env sh
-model=resnet50_ibn_a_old
-data_path=/pathToYourImageNetDataset/
+
+MODEL=resnet50_ibn_a
+DATA_PATH=/pathToYourImageNetDataset/
 
 python -u imagenet.py \
-    -a $model \
+    -a $MODEL \
+    --data $DATA_PATH \
+    --pretrained \
     --test-batch 100 \
-    --model_weight pretrained/${model}.pth \
     -e \
     -j 16 \
-    --data $data_path \
-    --gpu_id 0,1 \
-    $* 2>&1|tee pretrained/${model}.log &
+    --gpu_id 0,1
