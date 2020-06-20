@@ -1,8 +1,8 @@
 import math
 import warnings
 
+import torch
 import torch.nn as nn
-import torch.utils.model_zoo as model_zoo
 
 from .modules import IBN
 
@@ -12,10 +12,10 @@ __all__ = ['ResNet_IBN', 'resnet50_ibn_a', 'resnet101_ibn_a', 'resnet152_ibn_a',
 
 
 model_urls = {
-    'resnet50_ibn_a': 'https://xingang.s3-ap-southeast-1.amazonaws.com/resnet50_ibn_a-d9d0bb7b.pth',
-    'resnet101_ibn_a': 'https://xingang.s3-ap-southeast-1.amazonaws.com/resnet101_ibn_a-59ea0ac6.pth',
-    'resnet50_ibn_b': 'https://xingang.s3-ap-southeast-1.amazonaws.com/resnet50_ibn_b-9ca61e85.pth',
-    'resnet101_ibn_b': 'https://xingang.s3-ap-southeast-1.amazonaws.com/resnet101_ibn_b-c55f6dba.pth',
+    'resnet50_ibn_a': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet50_ibn_a-d9d0bb7b.pth',
+    'resnet101_ibn_a': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet101_ibn_a-59ea0ac6.pth',
+    'resnet50_ibn_b': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet50_ibn_b-9ca61e85.pth',
+    'resnet101_ibn_b': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet101_ibn_b-c55f6dba.pth',
 }
 
 
@@ -145,7 +145,7 @@ def resnet50_ibn_a(pretrained=False, **kwargs):
                        ibn_cfg=('a', 'a', 'a', None),
                        **kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['resnet50_ibn_a']))
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['resnet50_ibn_a']))
     return model
 
 
@@ -160,7 +160,7 @@ def resnet101_ibn_a(pretrained=False, **kwargs):
                        ibn_cfg=('a', 'a', 'a', None),
                        **kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['resnet101_ibn_a']))
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['resnet101_ibn_a']))
     return model
 
 
@@ -190,7 +190,7 @@ def resnet50_ibn_b(pretrained=False, **kwargs):
                        ibn_cfg=('b', 'b', None, None),
                        **kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['resnet50_ibn_b']))
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['resnet50_ibn_b']))
     return model
 
 
@@ -205,7 +205,7 @@ def resnet101_ibn_b(pretrained=False, **kwargs):
                        ibn_cfg=('b', 'b', None, None),
                        **kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['resnet101_ibn_b']))
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['resnet101_ibn_b']))
     return model
 
 

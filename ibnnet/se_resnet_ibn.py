@@ -1,8 +1,8 @@
 import math
 import warnings
 
+import torch
 import torch.nn as nn
-import torch.utils.model_zoo as model_zoo
 
 from .modules import IBN, SELayer
 
@@ -11,7 +11,7 @@ __all__ = ['se_resnet50_ibn_a', 'se_resnet101_ibn_a', 'se_resnet152_ibn_a']
 
 
 model_urls = {
-    'se_resnet101_ibn_a': 'https://xingang.s3-ap-southeast-1.amazonaws.com/se_resnet101_ibn_a-fabed4e2.pth',
+    'se_resnet101_ibn_a': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/se_resnet101_ibn_a-fabed4e2.pth',
 }
 
 
@@ -148,7 +148,7 @@ def se_resnet101_ibn_a(pretrained=False):
     """
     model = ResNet_IBN(SEBottleneck_IBN, [3, 4, 23, 3], ibn_cfg=('a', 'a', 'a', None))
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['se_resnet101_ibn_a']))
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['se_resnet101_ibn_a']))
     return model
 
 

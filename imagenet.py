@@ -15,7 +15,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
 
-import models as customized_models
+import ibnnet as customized_models
 
 from utils import Bar, AverageMeter, accuracy, mkdir_p
 
@@ -152,9 +152,9 @@ def main():
     print("=> creating model '{}'".format(args.arch))
     if args.arch.startswith('resnext'):
         model = models.__dict__[args.arch](
+                    pretrained=args.pretrained,
                     baseWidth=args.base_width,
                     cardinality=args.cardinality,
-                    pretrained=args.pretrained,
                 )
     else:
         model = models.__dict__[args.arch](pretrained=args.pretrained)
@@ -199,7 +199,6 @@ def main():
         return
 
     # Train and val
-    test_loss, test_acc1, test_acc = test(val_loader, model, criterion, start_epoch, use_cuda)
     for epoch in range(start_epoch, args.epochs):
         adjust_learning_rate(optimizer, epoch)
 

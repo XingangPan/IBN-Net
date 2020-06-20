@@ -19,12 +19,12 @@ Top1/Top5 error on the ImageNet validation set are reported. You may get differe
 
 | Model                     | origin         |  re-implementation      | IBN-Net     |
 | -------------------       | ------------------ | ------------------ | ------------------ |
-| DenseNet-121          | 25.0/-             | 24.96/7.85       | 24.47/7.25 [model](https://xingang.s3-ap-southeast-1.amazonaws.com/densenet121_ibn_a-e4af5cc1.pth)    |
-| DenseNet-169          | 23.6/-              | 24.02/7.06      | 23.25/6.51 [model](https://xingang.s3-ap-southeast-1.amazonaws.com/densenet169_ibn_a-9f32c161.pth)    |
-| ResNet-50                | 24.7/7.8          | 24.27/7.08       | 22.54/6.32  [model](https://xingang.s3-ap-southeast-1.amazonaws.com/resnet50_ibn_a-d9d0bb7b.pth)   |
-| ResNet-101             | 23.6/7.1           | 22.48/6.23       | 21.39/5.59  [model](https://xingang.s3-ap-southeast-1.amazonaws.com/resnet101_ibn_a-59ea0ac6.pth)  |
-| ResNeXt-101          | 21.2/5.6            | 21.31/5.74       | 20.88/5.42  [model](https://xingang.s3-ap-southeast-1.amazonaws.com/resnext101_ibn_a-6ace051d.pth)  |
-| SE-ResNet-101       | 22.38/6.07        | 21.68/5.88       | 21.25/5.51   [model](https://xingang.s3-ap-southeast-1.amazonaws.com/se_resnet101_ibn_a-fabed4e2.pth)  |
+| DenseNet-121          | 25.0/-             | 24.96/7.85       | 24.47/7.25 [model](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/densenet121_ibn_a-e4af5cc1.pth)    |
+| DenseNet-169          | 23.6/-              | 24.02/7.06      | 23.25/6.51 [model](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/densenet169_ibn_a-9f32c161.pth)    |
+| ResNet-50                | 24.7/7.8          | 24.27/7.08       | 22.54/6.32  [model](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet50_ibn_a-d9d0bb7b.pth)   |
+| ResNet-101             | 23.6/7.1           | 22.48/6.23       | 21.39/5.59  [model](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet101_ibn_a-59ea0ac6.pth)  |
+| ResNeXt-101          | 21.2/5.6            | 21.31/5.74       | 20.88/5.42  [model](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnext101_ibn_a-6ace051d.pth)  |
+| SE-ResNet-101       | 22.38/6.07        | 21.68/5.88       | 21.25/5.51   [model](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/se_resnet101_ibn_a-fabed4e2.pth)  |
 
 ### Before Start
 1. Clone the repository  

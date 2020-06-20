@@ -1,8 +1,8 @@
 import math
 import warnings
 
+import torch
 import torch.nn as nn
-import torch.utils.model_zoo as model_zoo
 
 from .modules import IBN
 
@@ -11,7 +11,7 @@ __all__ = ['resnext50_ibn_a', 'resnext101_ibn_a', 'resnext152_ibn_a']
 
 
 model_urls = {
-    'resnext101_ibn_a': 'https://xingang.s3-ap-southeast-1.amazonaws.com/resnext101_ibn_a-6ace051d.pth',
+    'resnext101_ibn_a': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnext101_ibn_a-6ace051d.pth',
 }
 
 
@@ -142,7 +142,7 @@ class ResNeXt_IBN(nn.Module):
         return x
 
 
-def resnext50_ibn_a(baseWidth, cardinality, pretrained=False):
+def resnext50_ibn_a(pretrained=False, baseWidth=4, cardinality=32):
     """
     Construct ResNeXt-50-IBN-a.
     """
@@ -152,17 +152,17 @@ def resnext50_ibn_a(baseWidth, cardinality, pretrained=False):
     return model
 
 
-def resnext101_ibn_a(baseWidth, cardinality, pretrained=False):
+def resnext101_ibn_a(pretrained=False, baseWidth=4, cardinality=32):
     """
     Construct ResNeXt-101-IBN-a.
     """
     model = ResNeXt_IBN(baseWidth, cardinality, [3, 4, 23, 3], ('a', 'a', 'a', None))
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['resnext101_ibn_a']))
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['resnext101_ibn_a']))
     return model
 
 
-def resnext152_ibn_a(baseWidth, cardinality, pretrained=False):
+def resnext152_ibn_a(pretrained=False, baseWidth=4, cardinality=32):
     """
     Construct ResNeXt-152-IBN-a.
     """

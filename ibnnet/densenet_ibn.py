@@ -4,16 +4,15 @@ import warnings
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torch.utils.model_zoo as model_zoo
 
 
-__all__ = ['DenseNet', 'densenet121_ibn_a', 'densenet169_ibn_a',
+__all__ = ['DenseNet_IBN', 'densenet121_ibn_a', 'densenet169_ibn_a',
            'densenet201_ibn_a', 'densenet161_ibn_a']
 
 
 model_urls = {
-    'densenet121_ibn_a': 'https://xingang.s3-ap-southeast-1.amazonaws.com/densenet121_ibn_a-e4af5cc1.pth',
-    'densenet169_ibn_a': 'https://xingang.s3-ap-southeast-1.amazonaws.com/densenet169_ibn_a-9f32c161.pth',
+    'densenet121_ibn_a': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/densenet121_ibn_a-e4af5cc1.pth',
+    'densenet169_ibn_a': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/densenet169_ibn_a-9f32c161.pth',
 }
 
 
@@ -47,10 +46,10 @@ def densenet121_ibn_a(pretrained=False, **kwargs):
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    model = DenseNet(num_init_features=64, growth_rate=32, block_config=(6, 12, 24, 16),
+    model = DenseNet_IBN(num_init_features=64, growth_rate=32, block_config=(6, 12, 24, 16),
                      **kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['densenet121_ibn_a']))
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['densenet121_ibn_a']))
     return model
 
 
@@ -61,10 +60,10 @@ def densenet169_ibn_a(pretrained=False, **kwargs):
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    model = DenseNet(num_init_features=64, growth_rate=32, block_config=(6, 12, 32, 32),
+    model = DenseNet_IBN(num_init_features=64, growth_rate=32, block_config=(6, 12, 32, 32),
                      **kwargs)
     if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['densenet169_ibn_a']))
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['densenet169_ibn_a']))
     return model
 
 
@@ -75,7 +74,7 @@ def densenet201_ibn_a(pretrained=False, **kwargs):
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    model = DenseNet(num_init_features=64, growth_rate=32, block_config=(6, 12, 48, 32),
+    model = DenseNet_IBN(num_init_features=64, growth_rate=32, block_config=(6, 12, 48, 32),
                      **kwargs)
     if pretrained:
         warnings.warn("Pretrained model not available for Densenet-201-IBN-a!")
@@ -89,7 +88,7 @@ def densenet161_ibn_a(pretrained=False, **kwargs):
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    model = DenseNet(num_init_features=96, growth_rate=48, block_config=(6, 12, 36, 24),
+    model = DenseNet_IBN(num_init_features=96, growth_rate=48, block_config=(6, 12, 36, 24),
                      **kwargs)
     if pretrained:
         warnings.warn("Pretrained model not available for Densenet-161-IBN-a!")
@@ -140,7 +139,7 @@ class _Transition(nn.Sequential):
         self.add_module('pool', nn.AvgPool2d(kernel_size=2, stride=2))
 
 
-class DenseNet(nn.Module):
+class DenseNet_IBN(nn.Module):
     r"""Densenet-BC model class, based on
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`_
 
@@ -156,7 +155,7 @@ class DenseNet(nn.Module):
     def __init__(self, growth_rate=32, block_config=(6, 12, 24, 16),
                  num_init_features=64, bn_size=4, drop_rate=0, num_classes=1000):
 
-        super(DenseNet, self).__init__()
+        super(DenseNet_IBN, self).__init__()
 
         # First convolution
         self.features = nn.Sequential(OrderedDict([
