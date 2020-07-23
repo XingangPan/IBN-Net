@@ -22,6 +22,8 @@ Top1/Top5 error on the ImageNet validation set are reported. You may get differe
 | -------------------       | ------------------ | ------------------ | ------------------ |
 | DenseNet-121          | 25.0/-             | 24.96/7.85       | 24.47/7.25 [[pre-trained model]](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/densenet121_ibn_a-e4af5cc1.pth)    |
 | DenseNet-169          | 23.6/-              | 24.02/7.06      | 23.25/6.51 [[pre-trained model]](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/densenet169_ibn_a-9f32c161.pth)    |
+| ResNet-18                | -          | 30.24/10.92     | 29.17/10.24  [[pre-trained model]](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet18_ibn_a-2f571257.pth)   |
+| ResNet-34                | -          | 26.70/8.58       | 25.78/8.19  [[pre-trained model]](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet34_ibn_a-94bc1577.pth)   |
 | ResNet-50                | 24.7/7.8          | 24.27/7.08       | 22.54/6.32  [[pre-trained model]](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet50_ibn_a-d9d0bb7b.pth)   |
 | ResNet-101             | 23.6/7.1           | 22.48/6.23       | 21.39/5.59  [[pre-trained model]](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet101_ibn_a-59ea0ac6.pth)  |
 | ResNeXt-101          | 21.2/5.6            | 21.31/5.74       | 20.88/5.42  [[pre-trained model]](https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnext101_ibn_a-6ace051d.pth)  |

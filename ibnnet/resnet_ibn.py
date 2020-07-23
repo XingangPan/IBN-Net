@@ -7,16 +7,59 @@ import torch.nn as nn
 from .modules import IBN
 
 
-__all__ = ['ResNet_IBN', 'resnet50_ibn_a', 'resnet101_ibn_a', 'resnet152_ibn_a',
-           'resnet50_ibn_b', 'resnet101_ibn_b', 'resnet152_ibn_b']
+__all__ = ['ResNet_IBN', 'resnet18_ibn_a', 'resnet34_ibn_a', 'resnet50_ibn_a', 'resnet101_ibn_a', 'resnet152_ibn_a',
+           'resnet18_ibn_b', 'resnet34_ibn_b', 'resnet50_ibn_b', 'resnet101_ibn_b', 'resnet152_ibn_b']
 
 
 model_urls = {
+    'resnet18_ibn_a': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet18_ibn_a-2f571257.pth',
+    'resnet34_ibn_a': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet34_ibn_a-94bc1577.pth',
     'resnet50_ibn_a': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet50_ibn_a-d9d0bb7b.pth',
     'resnet101_ibn_a': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet101_ibn_a-59ea0ac6.pth',
+    'resnet18_ibn_b': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet18_ibn_b-bc2f3c11.pth',
+    'resnet34_ibn_b': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet34_ibn_b-04134c37.pth',
     'resnet50_ibn_b': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet50_ibn_b-9ca61e85.pth',
     'resnet101_ibn_b': 'https://github.com/XingangPan/IBN-Net/releases/download/v1.0/resnet101_ibn_b-c55f6dba.pth',
 }
+
+
+class BasicBlock_IBN(nn.Module):
+    expansion = 1
+
+    def __init__(self, inplanes, planes, ibn=None, stride=1, downsample=None):
+        super(BasicBlock_IBN, self).__init__()
+        self.conv1 = nn.Conv2d(inplanes, planes, kernel_size=3, stride=stride,
+                               padding=1, bias=False)
+        if ibn == 'a':
+            self.bn1 = IBN(planes)
+        else:
+            self.bn1 = nn.BatchNorm2d(planes)
+        self.relu = nn.ReLU(inplace=True)
+        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3, padding=1, bias=False)
+        self.bn2 = nn.BatchNorm2d(planes)
+        self.IN = nn.InstanceNorm2d(planes, affine=True) if ibn == 'b' else None
+        self.downsample = downsample
+        self.stride = stride
+
+    def forward(self, x):
+        residual = x
+
+        out = self.conv1(x)
+        out = self.bn1(out)
+        out = self.relu(out)
+
+        out = self.conv2(out)
+        out = self.bn2(out)
+
+        if self.downsample is not None:
+            residual = self.downsample(x)
+
+        out += residual
+        if self.IN is not None:
+            out = self.IN(out)
+        out = self.relu(out)
+
+        return out
 
 
 class Bottleneck_IBN(nn.Module):
@@ -134,6 +177,36 @@ class ResNet_IBN(nn.Module):
         return x
 
 
+def resnet18_ibn_a(pretrained=False, **kwargs):
+    """Constructs a ResNet-18-IBN-a model.
+
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = ResNet_IBN(block=BasicBlock_IBN,
+                       layers=[2, 2, 2, 2],
+                       ibn_cfg=('a', 'a', 'a', None),
+                       **kwargs)
+    if pretrained:
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['resnet18_ibn_a']))
+    return model
+
+
+def resnet34_ibn_a(pretrained=False, **kwargs):
+    """Constructs a ResNet-34-IBN-a model.
+
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = ResNet_IBN(block=BasicBlock_IBN,
+                       layers=[3, 4, 6, 3],
+                       ibn_cfg=('a', 'a', 'a', None),
+                       **kwargs)
+    if pretrained:
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['resnet34_ibn_a']))
+    return model
+
+
 def resnet50_ibn_a(pretrained=False, **kwargs):
     """Constructs a ResNet-50-IBN-a model.
 
@@ -176,6 +249,36 @@ def resnet152_ibn_a(pretrained=False, **kwargs):
                        **kwargs)
     if pretrained:
         warnings.warn("Pretrained model not available for ResNet-152-IBN-a!")
+    return model
+
+
+def resnet18_ibn_b(pretrained=False, **kwargs):
+    """Constructs a ResNet-18-IBN-b model.
+
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = ResNet_IBN(block=BasicBlock_IBN,
+                       layers=[2, 2, 2, 2],
+                       ibn_cfg=('b', 'b', None, None),
+                       **kwargs)
+    if pretrained:
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['resnet18_ibn_b']))
+    return model
+
+
+def resnet34_ibn_b(pretrained=False, **kwargs):
+    """Constructs a ResNet-34-IBN-b model.
+
+    Args:
+        pretrained (bool): If True, returns a model pre-trained on ImageNet
+    """
+    model = ResNet_IBN(block=BasicBlock_IBN,
+                       layers=[3, 4, 6, 3],
+                       ibn_cfg=('b', 'b', None, None),
+                       **kwargs)
+    if pretrained:
+        model.load_state_dict(torch.hub.load_state_dict_from_url(model_urls['resnet34_ibn_b']))
     return model
 
 
